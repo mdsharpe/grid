@@ -1,5 +1,4 @@
-pwd
-pushd ./src/web/
+cd ./src/web
 sudo chown node node_modules
 npm i
-popd
+cd ../..

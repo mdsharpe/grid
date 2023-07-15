@@ -1,8 +1,19 @@
 // Reference: https://code.visualstudio.com/docs/remote/containers#_devcontainerjson-reference
 {
-  "name": "Grid",
-  "dockerFile": "Dockerfile",
-  "appPort": [4000, 4200, 4433, 5000, 8080, 9876],
-  "postCreateCommand": "sh .devcontainer/post-create.sh",
-  "remoteUser": "node"
+    "name": "Grid",
+    "dockerFile": "Dockerfile",
+    "appPort": [4000, 4200, 4433, 5000, 8080, 9876],
+    "postCreateCommand": "sh .devcontainer/post-create.sh",
+    "remoteUser": "node",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Angular.ng-template",
+                "ms-vscode-remote.remote-containers",
+                "ms-azuretools.vscode-docker",
+                "esbenp.prettier-vscode",
+                "ms-vscode-remote.remote-wsl"
+            ]
+        }
+    }
 }

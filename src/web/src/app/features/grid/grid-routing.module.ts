@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { GridShellComponent } from './grid-shell/grid-shell.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    component: GridShellComponent,
-  },
+    {
+        path: '',
+        pathMatch: 'full',
+        component: GridShellComponent,
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
 export class GridRoutingModule {}

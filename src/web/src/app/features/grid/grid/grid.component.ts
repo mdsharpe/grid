@@ -9,9 +9,11 @@ import {
 import {
     Observable,
     ReplaySubject,
+    debounceTime,
     fromEvent,
     takeUntil,
 } from 'rxjs';
+import * as THREE from 'three';
 
 @Component({
     selector: 'app-grid',
@@ -19,56 +21,86 @@ import {
     styleUrls: ['./grid.component.scss'],
 })
 export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
+    private readonly _gridSpacing = 100;
+    private readonly _size = 51; // Should be odd
+    private readonly _width = this._gridSpacing * this._size;
+    private readonly _height = this._gridSpacing * this._size;
+
     private readonly _destroy$ = new ReplaySubject<boolean>(1);
+    private _animationRunning = true;
 
     @ViewChild('canvas')
-    private _canvas!: ElementRef<HTMLCanvasElement>;
-    private _context!: CanvasRenderingContext2D;
+    private readonly _canvas!: ElementRef<HTMLCanvasElement>;
+
+    private _scene!: THREE.Scene;
+    private _camera!: THREE.PerspectiveCamera;
+    private _renderer!: THREE.WebGLRenderer;
 
     private _resizeEvents$: Observable<UIEvent> = fromEvent<UIEvent>(
         window,
         'resize'
     );
 
-    public ngOnInit(): void {}
+    constructor() {}
+
+    public ngOnInit(): void {
+        this._scene = new THREE.Scene();
+
+        var midX = this._width / 2;
+        var midY = this._height / 2;
+
+        this._camera = new THREE.PerspectiveCamera();
+        this._camera.far = 5000;
+        this._camera.position.set(midX, midY - 1000, 500);
+        this._camera.lookAt(midX, midY, 0);
+        this._camera.updateProjectionMatrix();
+
+        const gridMaterial = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            opacity: 0.125,
+            transparent: true,
+        });
+
+        const gridGeometry = new THREE.BufferGeometry().setFromPoints(
+            this.buildGridPoints()
+        );
+        const grid = new THREE.Line(gridGeometry, gridMaterial);
+
+        this._scene.add(grid);
+    }
 
     public ngAfterViewInit(): void {
-        this._resizeEvents$.pipe(takeUntil(this._destroy$)).subscribe((_) => {
-            this.setCanvasSize();
-            this.drawGrid();
+        this._renderer = new THREE.WebGLRenderer({
+            canvas: this._canvas.nativeElement,
+            antialias: true,
+            alpha: true,
         });
+
+        this._resizeEvents$
+            .pipe(takeUntil(this._destroy$), debounceTime(250))
+            .subscribe((_) => {
+                this.setCanvasSize();
+            });
 
         this.setCanvasSize();
 
-        this._context = this._canvas.nativeElement.getContext('2d')!;
-
-        this.drawGrid();
+        this.render();
     }
 
     ngOnDestroy(): void {
+        this._animationRunning = false;
         this._destroy$.next(true);
         this._destroy$.complete();
     }
 
-    private drawGrid() {
-        var width = 400;
-        var height = 400;
-        var padding = 10;
-
-        var context = this._context;
-
-        for (var x = 0; x <= width; x += 40) {
-            context.moveTo(0.5 + x + padding, padding);
-            context.lineTo(0.5 + x + padding, height + padding);
+    private render(): void {
+        if (this._animationRunning) {
+            requestAnimationFrame(() => {
+                this.render();
+            });
         }
 
-        for (var x = 0; x <= height; x += 40) {
-            context.moveTo(padding, 0.5 + x + padding);
-            context.lineTo(width + padding, 0.5 + x + padding);
-        }
-
-        context.strokeStyle = 'white';
-        context.stroke();
+        this._renderer.render(this._scene, this._camera);
     }
 
     private setCanvasSize(): void {
@@ -77,5 +109,50 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
         canvas.width = parent.offsetWidth;
         canvas.height = parent.offsetHeight;
+
+        this._renderer.setSize(canvas.width, canvas.height);
+        this._camera.aspect = canvas.width / canvas.height;
+        this._camera.updateProjectionMatrix();
+    }
+
+    private buildGridPoints(): THREE.Vector3[] {
+        const points: THREE.Vector3[] = [];
+
+        let x = 0,
+            y = 0;
+
+        while (y <= this._height) {
+            for (let i = 0; i <= this._width; i += this._gridSpacing) {
+                x = i;
+                points.push(new THREE.Vector3(x, y, 0));
+            }
+
+            y += this._gridSpacing;
+
+            for (let i = this._width; i >= 0; i -= this._gridSpacing) {
+                x = i;
+                points.push(new THREE.Vector3(x, y, 0));
+            }
+
+            y += this._gridSpacing;
+        }
+
+        while (x <= this._width) {
+            for (let i = 0; i <= this._height; i += this._gridSpacing) {
+                y = i;
+                points.push(new THREE.Vector3(x, y, 0));
+            }
+
+            x += this._gridSpacing;
+
+            for (let i = this._height; i >= 0; i -= this._gridSpacing) {
+                y = i;
+                points.push(new THREE.Vector3(x, y, 0));
+            }
+
+            x += this._gridSpacing;
+        }
+
+        return points;
     }
 }

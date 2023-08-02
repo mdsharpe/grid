@@ -39,4 +39,5 @@ body,
 .app-grid__main {
     grid-column: 0;
     grid-row: app-grid-main;
+    overflow: hidden;
 }

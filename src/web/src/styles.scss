@@ -1,5 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body {
+    background-color: black;
     color: white;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+body, .app-grid__root {
+    height: 100vh;
+    max-height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+}
+
+.app-grid__root {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: [app-grid-header] min-content [app-grid-main] auto; 
+}
+
+.app-grid__header {
+    grid-column: 0;
+    grid-row: app-grid-header;
+}
+
+.app-grid__main {
+    grid-column: 0;
+    grid-row: app-grid-main;
 }

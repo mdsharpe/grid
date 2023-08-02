@@ -51,23 +51,20 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private drawGrid() {
-        // Box width
-        var bw = 400;
-        // Box height
-        var bh = 400;
-        // Padding
-        var p = 10;
+        var width = 400;
+        var height = 400;
+        var padding = 10;
 
         var context = this._context;
 
-        for (var x = 0; x <= bw; x += 40) {
-            context.moveTo(0.5 + x + p, p);
-            context.lineTo(0.5 + x + p, bh + p);
+        for (var x = 0; x <= width; x += 40) {
+            context.moveTo(0.5 + x + padding, padding);
+            context.lineTo(0.5 + x + padding, height + padding);
         }
 
-        for (var x = 0; x <= bh; x += 40) {
-            context.moveTo(p, 0.5 + x + p);
-            context.lineTo(bw + p, 0.5 + x + p);
+        for (var x = 0; x <= height; x += 40) {
+            context.moveTo(padding, 0.5 + x + padding);
+            context.lineTo(width + padding, 0.5 + x + padding);
         }
 
         context.strokeStyle = 'white';

@@ -15,10 +15,13 @@ import {
 } from 'rxjs';
 import * as THREE from 'three';
 
+import { GridLinesService, PlanetariumService } from '../objects-in-space';
+
 @Component({
     selector: 'app-grid',
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.scss'],
+    providers: [GridLinesService, PlanetariumService]
 })
 export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly _gridSpacing = 100;
@@ -41,32 +44,23 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         'resize'
     );
 
-    constructor() {}
+    constructor(
+        private _gridLines: GridLinesService,
+        private _planetarium: PlanetariumService
+    ) {}
 
     public ngOnInit(): void {
+        this.initCamera();
+
         this._scene = new THREE.Scene();
 
-        var midX = this._width / 2;
-        var midY = this._height / 2;
-
-        this._camera = new THREE.PerspectiveCamera();
-        this._camera.far = 5000;
-        this._camera.position.set(midX, midY - 1000, 500);
-        this._camera.lookAt(midX, midY, 0);
-        this._camera.updateProjectionMatrix();
-
-        const gridMaterial = new THREE.LineBasicMaterial({
-            color: 0xffffff,
-            opacity: 0.125,
-            transparent: true,
+        const grid = this._gridLines.getObjects({
+            width: this._width,
+            height: this._height,
+            spacing: this._gridSpacing
         });
 
-        const gridGeometry = new THREE.BufferGeometry().setFromPoints(
-            this.buildGridPoints()
-        );
-        const grid = new THREE.Line(gridGeometry, gridMaterial);
-
-        this._scene.add(grid);
+        this._scene.add(...grid);
     }
 
     public ngAfterViewInit(): void {
@@ -93,6 +87,17 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this._destroy$.complete();
     }
 
+    private initCamera():void {
+        var midX = this._width / 2;
+        var midY = this._height / 2;
+
+        this._camera = new THREE.PerspectiveCamera();
+        this._camera.far = 5000;
+        this._camera.position.set(midX, midY - 1000, 500);
+        this._camera.lookAt(midX, midY, 0);
+        this._camera.updateProjectionMatrix();
+    }
+
     private render(): void {
         if (this._animationRunning) {
             requestAnimationFrame(() => {
@@ -113,46 +118,5 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this._renderer.setSize(canvas.width, canvas.height);
         this._camera.aspect = canvas.width / canvas.height;
         this._camera.updateProjectionMatrix();
-    }
-
-    private buildGridPoints(): THREE.Vector3[] {
-        const points: THREE.Vector3[] = [];
-
-        let x = 0,
-            y = 0;
-
-        while (y <= this._height) {
-            for (let i = 0; i <= this._width; i += this._gridSpacing) {
-                x = i;
-                points.push(new THREE.Vector3(x, y, 0));
-            }
-
-            y += this._gridSpacing;
-
-            for (let i = this._width; i >= 0; i -= this._gridSpacing) {
-                x = i;
-                points.push(new THREE.Vector3(x, y, 0));
-            }
-
-            y += this._gridSpacing;
-        }
-
-        while (x <= this._width) {
-            for (let i = 0; i <= this._height; i += this._gridSpacing) {
-                y = i;
-                points.push(new THREE.Vector3(x, y, 0));
-            }
-
-            x += this._gridSpacing;
-
-            for (let i = this._height; i >= 0; i -= this._gridSpacing) {
-                y = i;
-                points.push(new THREE.Vector3(x, y, 0));
-            }
-
-            x += this._gridSpacing;
-        }
-
-        return points;
     }
 }

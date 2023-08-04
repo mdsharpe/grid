@@ -1,43 +1,44 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import * as THREE from 'three';
-import { ObjectsInSpaceService } from './objects-in-space.service';
 
-export interface GridLinesOptions {
-    width: number;
-    height: number;
-    spacing: number;
-}
+import { ObjectsInSpace } from './objects-in-space';
+import { GRID_CONSTANTS, GridConstants } from '../grid-constants';
 
 @Injectable({
     providedIn: 'root',
 })
-export class GridLinesService implements OnInit, ObjectsInSpaceService {
-    constructor() {}
+export class GridLinesService implements ObjectsInSpace {
+    constructor(
+        @Inject(GRID_CONSTANTS) private readonly _constants: GridConstants
+    ) {}
 
-    public ngOnInit(): void {
+    private _geometry: THREE.BufferGeometry | undefined;
+    private _grid: THREE.Line | undefined;
+
+    get objects(): THREE.Object3D[] {
+        return this._grid ? [this._grid] : [];
+    }
+
+    public onInit(): void {
         const material = new THREE.LineBasicMaterial({
             color: 0xffffff,
             opacity: 0.25,
             transparent: true,
         });
 
-        const geometry = new THREE.BufferGeometry().setFromPoints(
-            this.getPoints(options)
+        this._geometry = new THREE.BufferGeometry().setFromPoints(
+            this.getPoints()
         );
 
-        const grid = new THREE.Line(geometry, material);
-
-        return [grid];
+        this._grid = new THREE.Line(this._geometry, material);
     }
 
     public dispose(): void {
+        this._geometry?.dispose();
     }
 
-    public getObjects(options: GridLinesOptions): THREE.Object3D[] {
-    }
-
-    private getPoints(options: GridLinesOptions): THREE.Vector3[] {
-        const { width, height, spacing } = options;
+    private getPoints(): THREE.Vector3[] {
+        const { width, height, spacing } = this._constants;
 
         const points: THREE.Vector3[] = [];
 

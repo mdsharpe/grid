@@ -2,6 +2,7 @@ import {
     AfterViewInit,
     Component,
     ElementRef,
+    Inject,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -16,12 +17,13 @@ import {
 import * as THREE from 'three';
 
 import { GridLinesService, PlanetariumService } from '../objects-in-space';
+import { GRID_CONSTANTS, GridConstants } from '../grid-constants';
 
 @Component({
     selector: 'app-grid',
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.scss'],
-    providers: [GridLinesService, PlanetariumService]
+    providers: [GridLinesService, PlanetariumService],
 })
 export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly _gridSpacing = 100;
@@ -45,6 +47,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     constructor(
+        @Inject(GRID_CONSTANTS) private readonly _constants: GridConstants,
         private _gridLines: GridLinesService,
         private _planetarium: PlanetariumService
     ) {}
@@ -52,15 +55,11 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     public ngOnInit(): void {
         this.initCamera();
 
+        this._gridLines.onInit();
+        this._planetarium.onInit();
+
         this._scene = new THREE.Scene();
-
-        const grid = this._gridLines.getObjects({
-            width: this._width,
-            height: this._height,
-            spacing: this._gridSpacing
-        });
-
-        this._scene.add(...grid);
+        this._scene.add(...this._gridLines.objects);
     }
 
     public ngAfterViewInit(): void {
@@ -85,9 +84,12 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this._animationRunning = false;
         this._destroy$.next(true);
         this._destroy$.complete();
+
+        this._gridLines.dispose();
+        this._planetarium.dispose();
     }
 
-    private initCamera():void {
+    private initCamera(): void {
         var midX = this._width / 2;
         var midY = this._height / 2;
 

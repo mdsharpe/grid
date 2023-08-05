@@ -55,8 +55,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     public ngOnInit(): void {
         this.initCamera();
 
-        this._gridLines.onInit();
-        this._planetarium.onInit();
+        this._gridLines.init();
+        this._planetarium.init();
 
         this._scene = new THREE.Scene();
         this._scene.add(...this._gridLines.objects);

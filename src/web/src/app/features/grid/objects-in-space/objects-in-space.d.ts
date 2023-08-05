@@ -1,5 +1,7 @@
+import * as THREE from 'three';
+
 export interface ObjectsInSpace {
     get objects(): THREE.Object3D[];
-    onInit(): void;
+    init(): void;
     dispose(): void;
 }

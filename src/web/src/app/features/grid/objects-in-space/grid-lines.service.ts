@@ -19,7 +19,7 @@ export class GridLinesService implements ObjectsInSpace {
         return this._grid ? [this._grid] : [];
     }
 
-    public onInit(): void {
+    public init(): void {
         const material = new THREE.LineBasicMaterial({
             color: 0xffffff,
             opacity: 0.25,

@@ -10,7 +10,6 @@
             "extensions": [
                 "Angular.ng-template",
                 "ms-vscode-remote.remote-containers",
-                "ms-azuretools.vscode-docker",
                 "esbenp.prettier-vscode",
                 "ms-vscode-remote.remote-wsl"
             ]

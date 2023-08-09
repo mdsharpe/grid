@@ -60,6 +60,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this._scene = new THREE.Scene();
         this._scene.add(...this._gridLines.objects);
+        this._scene.add(...this._planetarium.objects);
     }
 
     public ngAfterViewInit(): void {
@@ -90,13 +91,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private initCamera(): void {
-        var midX = this._width / 2;
-        var midY = this._height / 2;
-
         this._camera = new THREE.PerspectiveCamera();
-        this._camera.far = 5000;
-        this._camera.position.set(midX, midY - 1000, 500);
-        this._camera.lookAt(midX, midY, 0);
+        this._camera.far = 10000;
+        this._camera.position.set(0, 0, 7000);
+        this._camera.lookAt(0, 0, 0);
         this._camera.updateProjectionMatrix();
     }
 

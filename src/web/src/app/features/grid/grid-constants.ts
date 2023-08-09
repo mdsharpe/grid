@@ -10,9 +10,11 @@ export class GridConstants {
         size: number // Should be odd
     ) {
         this.width = spacing * size;
-        this.height = spacing * size
+        this.gridMin = this.width * -0.5;
+        this.gridMax = this.width * 0.5;
     }
 
     public readonly width: number;
-    public readonly height: number;
+    public readonly gridMin: number;
+    public readonly gridMax: number;
 }

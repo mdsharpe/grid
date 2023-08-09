@@ -38,22 +38,25 @@ export class GridLinesService implements ObjectsInSpace {
     }
 
     private getPoints(): THREE.Vector3[] {
-        const { width, height, spacing } = this._constants;
+        const { width, spacing } = this._constants;
 
         const points: THREE.Vector3[] = [];
 
-        let x = 0,
-            y = 0;
+        const min = width * -0.5,
+            max = width * 0.5;
 
-        while (y <= height) {
-            for (let i = 0; i <= width; i += spacing) {
+        let x = min,
+            y = min;
+
+        while (y <= max) {
+            for (let i = min; i <= max; i += spacing) {
                 x = i;
                 points.push(new THREE.Vector3(x, y, 0));
             }
 
             y += spacing;
 
-            for (let i = width; i >= 0; i -= spacing) {
+            for (let i = max; i >= min; i -= spacing) {
                 x = i;
                 points.push(new THREE.Vector3(x, y, 0));
             }
@@ -61,15 +64,15 @@ export class GridLinesService implements ObjectsInSpace {
             y += spacing;
         }
 
-        while (x <= width) {
-            for (let i = 0; i <= height; i += spacing) {
+        while (x <= max) {
+            for (let i = min; i <= max; i += spacing) {
                 y = i;
                 points.push(new THREE.Vector3(x, y, 0));
             }
 
             x += spacing;
 
-            for (let i = height; i >= 0; i -= spacing) {
+            for (let i = max; i >= min; i -= spacing) {
                 y = i;
                 points.push(new THREE.Vector3(x, y, 0));
             }

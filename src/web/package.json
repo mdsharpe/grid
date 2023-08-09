@@ -18,6 +18,7 @@
         "@angular/platform-browser-dynamic": "^16.1.8",
         "@angular/router": "^16.1.8",
         "rxjs": "~7.8.1",
+        "seedrandom": "^3.0.5",
         "three": "^0.155.0",
         "tslib": "^2.6.1",
         "zone.js": "~0.13.1"
@@ -26,6 +27,7 @@
         "@angular-devkit/build-angular": "^16.1.7",
         "@angular/cli": "~16.1.7",
         "@angular/compiler-cli": "^16.1.8",
+        "@types/seedrandom": "^3.0.5",
         "@types/three": "^0.155.0",
         "typescript": "~5.1.6"
     }

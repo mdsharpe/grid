@@ -93,7 +93,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     private initCamera(): void {
         this._camera = new THREE.PerspectiveCamera();
         this._camera.far = 10000;
-        this._camera.position.set(0, 0, 7000);
+        this._camera.position.set(0, -3000, 4000);
         this._camera.lookAt(0, 0, 0);
         this._camera.updateProjectionMatrix();
     }

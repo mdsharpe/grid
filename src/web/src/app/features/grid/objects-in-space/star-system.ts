@@ -14,7 +14,7 @@ export class StarSystem implements ObjectsInSpace {
     public init(): void {
         const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
-        this._geometry = new THREE.SphereGeometry(50, 32, 16);
+        this._geometry = new THREE.SphereGeometry(25, 32, 16);
 
         this._star = new THREE.Mesh(this._geometry, material);
         this._star.position.x = this._position.x;

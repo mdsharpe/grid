@@ -4,9 +4,7 @@ import * as THREE from 'three';
 import { ObjectsInSpace } from './objects-in-space';
 import { GRID_CONSTANTS, GridConstants } from '../grid-constants';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class GridLinesService implements ObjectsInSpace {
     constructor(
         @Inject(GRID_CONSTANTS) private readonly _constants: GridConstants
@@ -15,7 +13,7 @@ export class GridLinesService implements ObjectsInSpace {
     private _geometry: THREE.BufferGeometry | undefined;
     private _grid: THREE.Line | undefined;
 
-    get objects(): THREE.Object3D[] {
+    public get objects(): THREE.Object3D[] {
         return this._grid ? [this._grid] : [];
     }
 

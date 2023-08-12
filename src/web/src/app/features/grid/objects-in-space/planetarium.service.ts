@@ -6,9 +6,7 @@ import { ObjectsInSpace } from './objects-in-space';
 import { StarSystem } from './star-system';
 import { RandomService } from 'src/app/shared/random/random.service';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class PlanetariumService implements ObjectsInSpace {
     constructor(
         @Inject(GRID_CONSTANTS) private readonly _constants: GridConstants,
@@ -17,7 +15,7 @@ export class PlanetariumService implements ObjectsInSpace {
 
     private _starSystems: StarSystem[] = [];
 
-    get objects(): THREE.Object3D[] {
+    public get objects(): THREE.Object3D[] {
         return this._starSystems.reduce<THREE.Object3D[]>(
             (accumulator, currentValue) =>
                 accumulator.concat(currentValue.objects),

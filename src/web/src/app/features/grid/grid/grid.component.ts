@@ -2,7 +2,6 @@ import {
     AfterViewInit,
     Component,
     ElementRef,
-    Inject,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -16,20 +15,21 @@ import {
 } from 'rxjs';
 import * as THREE from 'three';
 
-import { GridLinesService, PlanetariumService } from '../objects-in-space';
-import { GRID_CONSTANTS, GridConstants } from '../grid-constants';
+import { GridLinesService, PlanetariumService, ShipsService } from '../objects-in-space';
+import { PlayerService } from '../player';
 
 @Component({
     selector: 'app-grid',
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.scss'],
-    providers: [GridLinesService, PlanetariumService],
 })
 export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
-    private readonly _gridSpacing = 100;
-    private readonly _size = 51; // Should be odd
-    private readonly _width = this._gridSpacing * this._size;
-    private readonly _height = this._gridSpacing * this._size;
+    constructor(
+        private readonly _player: PlayerService,
+        private readonly _gridLines: GridLinesService,
+        private readonly _planetarium: PlanetariumService,
+        private readonly _ships: ShipsService
+    ) {}
 
     private readonly _destroy$ = new ReplaySubject<boolean>(1);
     private _animationRunning = true;
@@ -37,24 +37,19 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('canvas')
     private readonly _canvas!: ElementRef<HTMLCanvasElement>;
 
-    private _scene!: THREE.Scene;
-    private _camera!: THREE.PerspectiveCamera;
-    private _renderer!: THREE.WebGLRenderer;
+    private _scene: THREE.Scene | undefined;
+    private _camera: THREE.PerspectiveCamera | undefined;
+    private _renderer: THREE.WebGLRenderer | undefined;
 
     private _resizeEvents$: Observable<UIEvent> = fromEvent<UIEvent>(
         window,
         'resize'
     );
 
-    constructor(
-        @Inject(GRID_CONSTANTS) private readonly _constants: GridConstants,
-        private _gridLines: GridLinesService,
-        private _planetarium: PlanetariumService
-    ) {}
-
     public ngOnInit(): void {
         this.initCamera();
 
+        this._ships.init();
         this._gridLines.init();
         this._planetarium.init();
 
@@ -86,6 +81,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this._destroy$.next(true);
         this._destroy$.complete();
 
+        this._ships.dispose();
         this._gridLines.dispose();
         this._planetarium.dispose();
     }
@@ -105,7 +101,9 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         }
 
-        this._renderer.render(this._scene, this._camera);
+        if (this._scene && this._camera) {
+            this._renderer?.render(this._scene, this._camera);
+        }
     }
 
     private setCanvasSize(): void {
@@ -115,8 +113,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         canvas.width = parent.offsetWidth;
         canvas.height = parent.offsetHeight;
 
-        this._renderer.setSize(canvas.width, canvas.height);
-        this._camera.aspect = canvas.width / canvas.height;
-        this._camera.updateProjectionMatrix();
+        if (this._renderer && this._camera) {
+            this._renderer.setSize(canvas.width, canvas.height);
+            this._camera.aspect = canvas.width / canvas.height;
+            this._camera.updateProjectionMatrix();
+        }
     }
 }

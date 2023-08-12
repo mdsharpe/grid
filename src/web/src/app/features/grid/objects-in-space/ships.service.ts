@@ -7,8 +7,8 @@ import { Ship } from './ship';
 
 @Injectable()
 export class ShipsService implements ObjectsInSpace {
-    constructor(private readonly _player: PlayerService) {
-        this._playerShip = new Ship(_player.location);
+    constructor(player: PlayerService) {
+        this._playerShip = new Ship(player.location);
     }
 
     private readonly _playerShip: Ship;
@@ -17,7 +17,11 @@ export class ShipsService implements ObjectsInSpace {
         return this._playerShip ? [...this._playerShip.objects] : [];
     }
 
-    public init(): void {}
+    public init(): void {
+        this._playerShip.init();
+    }
 
-    public dispose(): void {}
+    public dispose(): void {
+        this._playerShip.dispose();
+    }
 }

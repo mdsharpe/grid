@@ -2,4 +2,4 @@ services:
   web:
     build: ./src/web
     ports:
-      - "4200:4200"
+      - "8080:4200"

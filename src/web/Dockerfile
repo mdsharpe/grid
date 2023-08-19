@@ -1,4 +1,9 @@
-FROM mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye
-EXPOSE 4200
-RUN npm i
-RUN ng serve --host 0.0.0.0  --disable-host-check --environment production
+FROM node:20-bullseye as build
+WORKDIR /usr/src/app
+COPY ./ /usr/src/app/
+RUN npm install
+RUN npm run build
+
+FROM nginx:latest
+COPY --from=build /usr/local/src/app/dist/sample-angular-app /usr/share/nginx/html
+EXPOSE 80

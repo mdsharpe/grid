@@ -1,9 +1,6 @@
-version: '3'
 services:
   web:
-    build: .
+    build: ./src/web
     ports:
       - "4200:4200"
-    volumes:
-      - ./src/web:/usr/src/app/src/web
     command: ng serve --host 0.0.0.0 --disable-host-check

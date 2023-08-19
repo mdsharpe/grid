@@ -1,10 +1,10 @@
-FROM node:20-bullseye as build
+FROM node:latest as build
 WORKDIR /usr/local/src/app
-COPY package.json .
-RUN npm i
 COPY . .
-RUN npm run build --configuration production
+RUN npm i
+RUN npm run build
 
 FROM nginx:latest
-COPY --from=build /usr/local/src/app/dist /usr/share/nginx/html
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /usr/local/src/app/dist/grid /usr/share/nginx/html
 EXPOSE 80

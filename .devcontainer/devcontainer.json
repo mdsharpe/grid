@@ -1,7 +1,7 @@
 // Reference: https://code.visualstudio.com/docs/remote/containers#_devcontainerjson-reference
 {
     "name": "Grid",
-    "dockerFile": "Dockerfile",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
     "appPort": [4000, 4200, 4433, 5000, 8080, 9876],
     "postCreateCommand": "sh .devcontainer/post-create.sh",
     "remoteUser": "node",

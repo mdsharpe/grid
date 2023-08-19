@@ -1,7 +1,8 @@
 FROM node:20-bullseye as build
 WORKDIR /usr/src/app
+COPY package.json .
+RUN npm i
 COPY . .
-RUN npm install
 RUN npm run build --configuration production
 
 FROM nginx:latest

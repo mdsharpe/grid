@@ -1,5 +1,5 @@
 FROM node:20-bullseye as build
-WORKDIR /usr/src/app
+WORKDIR /usr/local/src/app
 COPY package.json .
 RUN npm i
 COPY . .

@@ -11,7 +11,8 @@
                 "Angular.ng-template",
                 "ms-vscode-remote.remote-containers",
                 "esbenp.prettier-vscode",
-                "ms-vscode-remote.remote-wsl"
+                "ms-vscode-remote.remote-wsl",
+                "ms-azuretools.vscode-docker"
             ]
         }
     }

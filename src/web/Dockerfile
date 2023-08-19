@@ -4,4 +4,4 @@ EXPOSE 4200
 
 RUN npm i -g @angular/cli@latest
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+CMD ["ng", "serve", "--host", "0.0.0.0", "--environment", "production"]

@@ -5,7 +5,7 @@
         {
             "label": "ng serve",
             "type": "npm",
-            "script": "start-dev",
+            "script": "start",
             "group": "build",
             "path": "src/web",
             "isBackground": true,

@@ -1,10 +1,20 @@
 // Reference: https://code.visualstudio.com/docs/remote/containers#_devcontainerjson-reference
 {
     "name": "Grid",
-    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "appPort": [4000, 4200, 4433, 5000, 8080, 9876],
     "postCreateCommand": "sh .devcontainer/post-create.sh",
-    "remoteUser": "node",
+    "features": {
+        "node": {
+            "version": "lts",
+            "nodeGypDependencies": true
+        },
+        "terraform": {
+            "version": "latest",
+            "tflint": "latest",
+            "terragrunt": "latest"
+        }
+    },
     "customizations": {
         "vscode": {
             "extensions": [
@@ -12,7 +22,8 @@
                 "ms-vscode-remote.remote-containers",
                 "esbenp.prettier-vscode",
                 "ms-vscode-remote.remote-wsl",
-                "ms-azuretools.vscode-docker"
+                "ms-azuretools.vscode-docker",
+                "HashiCorp.terraform"
             ]
         }
     }

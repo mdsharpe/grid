@@ -1,4 +1,4 @@
 cd ./src/web
-sudo chown node node_modules
+sudo chown vscode node_modules
 npm i
 cd ../..

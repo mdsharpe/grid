@@ -9,6 +9,7 @@
             "version": "lts",
             "nodeGypDependencies": true
         },
+        "ghcr.io/devcontainers/features/azure-cli:1": {},
         "terraform": {
             "version": "latest",
             "tflint": "latest",
@@ -22,6 +23,7 @@
                 "ms-vscode-remote.remote-containers",
                 "esbenp.prettier-vscode",
                 "ms-vscode-remote.remote-wsl",
+                "ms-vscode.azurecli",
                 "HashiCorp.terraform"
             ]
         }

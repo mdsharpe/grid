@@ -9,7 +9,7 @@
             "version": "lts",
             "nodeGypDependencies": true
         },
-        "ghcr.io/devcontainers/features/azure-cli:1": {},
+        "azure-cli": {},
         "terraform": {
             "version": "latest",
             "tflint": "latest",

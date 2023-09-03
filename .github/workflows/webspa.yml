@@ -35,6 +35,7 @@ jobs:
         with:
           SERVICE: ${{ env.SERVICE }}
           IMAGE_NAME: ${{ env.IMAGE }}
-          REGISTRY: ${{ env.REGISTRY }}
+          REGISTRY_HOST: ${{ env.REGISTRY }}
+          REGISTRY_ENDPOINT: ghcr.io/${{ github.actor }}/${{ github.repository }}
           REGISTRY_USERNAME: ${{ github.actor }}
           REGISTRY_PASSWORD: ${{ github.token }}

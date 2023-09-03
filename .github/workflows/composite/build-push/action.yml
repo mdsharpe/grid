@@ -32,16 +32,25 @@ runs:
         username: ${{ inputs.REGISTRY_USERNAME }}
         password: ${{ inputs.REGISTRY_PASSWORD }}
 
-    - name: Extract metadata (tags, labels) for Docker
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ${{ env.REGISTRY }}/${{ inputs.IMAGE_NAME }}
+    - name: Set branch name as env variable
+      run: |
+        currentbranch=$(echo ${GITHUB_REF##*/})
+        echo "running on $currentbranch"
+        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
+      shell: bash
 
-    - name: Build and push
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+    - name: Compose build ${{ inputs.service }}
+      shell: bash
+      run: sudo -E docker-compose build ${{ inputs.service }} --no-start
+      working-directory: ./src
+      env:
+        TAG: ${{ env.BRANCH }}
+        REGISTRY: ${{ inputs.REGISTRY }}
+
+    - name: Compose push ${{ inputs.service }}
+      shell: bash
+      run: sudo -E docker-compose push ${{ inputs.service }}
+      working-directory: ./src
+      env:
+        TAG: ${{ env.BRANCH }}
+        REGISTRY: ${{ inputs.REGISTRY }}

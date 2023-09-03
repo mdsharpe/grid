@@ -1,5 +1,5 @@
 services:
-  web:
+  webspa:
     build: ./src/web
     ports:
       - "80:80"

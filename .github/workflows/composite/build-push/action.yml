@@ -12,12 +12,12 @@ inputs:
 env:
   REGISTRY: ghcr.io
 
+permissions:
+  contents: read
+  packages: write
+
 runs:
   using: "composite"
-
-  permissions:
-    contents: read
-    packages: write
 
   steps:
     # - name: Enable experimental features for the Docker daemon and CLI

@@ -21,6 +21,10 @@ env:
   SERVICE: webspa
   IMAGE: webspa
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   Build:
     runs-on: ubuntu-latest

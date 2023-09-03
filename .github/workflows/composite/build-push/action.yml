@@ -18,10 +18,6 @@ inputs:
 env:
   REGISTRY: ghcr.io
 
-permissions:
-  contents: read
-  packages: write
-
 runs:
   using: "composite"
 

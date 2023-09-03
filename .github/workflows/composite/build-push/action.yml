@@ -8,6 +8,12 @@ inputs:
   IMAGE_NAME:
     description: "Name of image"
     required: true
+  REGISTRY_USERNAME:
+    description: "Registry username"
+    required: true
+  REGISTRY_PASSWORD:
+    description: "Registry password"
+    required: true
 
 env:
   REGISTRY: ghcr.io
@@ -32,8 +38,8 @@ runs:
       uses: docker/login-action@v2
       with:
         registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ inputs.registry_username }}
+        password: ${{ inputs.registry_password }}
 
     - name: Extract metadata (tags, labels) for Docker
       id: meta

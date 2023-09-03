@@ -35,5 +35,6 @@ jobs:
         with:
           SERVICE: ${{ env.SERVICE }}
           IMAGE_NAME: ${{ env.IMAGE }}
+          REGISTRY: ${{ env.REGISTRY }}
           REGISTRY_USERNAME: ${{ github.actor }}
           REGISTRY_PASSWORD: ${{ github.token }}

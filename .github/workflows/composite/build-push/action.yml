@@ -38,14 +38,14 @@ runs:
       uses: docker/login-action@v2
       with:
         registry: ${{ env.REGISTRY }}
-        username: ${{ inputs.registry_username }}
-        password: ${{ inputs.registry_password }}
+        username: ${{ inputs.REGISTRY_USERNAME }}
+        password: ${{ inputs.REGISTRY_PASSWORD }}
 
     - name: Extract metadata (tags, labels) for Docker
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        images: ${{ env.REGISTRY }}/${{ inputs.IMAGE_NAME }}
 
     - name: Build and push
       uses: docker/build-push-action@v4

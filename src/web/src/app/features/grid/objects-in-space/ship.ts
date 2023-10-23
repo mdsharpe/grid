@@ -18,7 +18,7 @@ export class Ship implements ObjectsInSpace {
 
     public readonly location$: Observable<THREE.Vector3>;
 
-    public get objects(): THREE.Object3D<THREE.Event>[] {
+    public get objects(): THREE.Object3D[] {
         return this._cylinder ? [this._cylinder] : [];
     }
 

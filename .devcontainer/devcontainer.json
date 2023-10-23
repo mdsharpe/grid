@@ -3,7 +3,6 @@
     "name": "Grid",
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "appPort": [4000, 4200, 4433, 5000, 8080, 9876],
-    "postCreateCommand": "sh .devcontainer/post-create.sh",
     "features": {
         "node": {
             "version": "lts",
@@ -27,5 +26,6 @@
                 "HashiCorp.terraform"
             ]
         }
-    }
+    },
+    "postCreateCommand": "sh .devcontainer/post-create.sh"
 }

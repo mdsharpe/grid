@@ -8,10 +8,7 @@
             "script": "start",
             "group": "build",
             "path": "src/web",
-            "isBackground": true,
-            "runOptions": {
-                "runOn": "folderOpen"
-            }
+            "isBackground": true
         }
     ]
 }
